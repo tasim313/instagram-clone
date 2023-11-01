@@ -1,13 +1,15 @@
+"use client"
+
 import Image from "next/image";
 import React from "react";
+import { SearchIcon } from "@heroicons/react/outline";
 
-const Header = () =>{
+
+export default function Header(){
     return(
         <>
-        <div>
-            {/* Left */}
-
             <div className="flex items-center justify-between max-w-6xl">
+                {/* Left */}
                   <div className="cursor-pointer h-24 w-24 relative hidden lg:inline-grid">
                       <Image src="http://www.jennexplores.com/wp-content/uploads/2015/09/Instagram_logo_black.png" 
                       layout="fill" className="object-contain"/>
@@ -19,16 +21,20 @@ const Header = () =>{
                       layout="fill" className="object-contain"/>
                   </div>
 
+                  {/* Middle */}
+
+                  <div className="relative mt-1">
+                    <div className="absolute top-2 left-2">
+                       <SearchIcon className="h-5 text-gray-500"/>
+                    </div>
+                    <input type="text" placeholder="Search" className="bg-gray-50 pl-10 border-gray-500 text-sm focus:ring-black focus:border-black rounded-md"/>
+                  </div>
+
+                  {/* Right */}
+
                   <h1>Right Side</h1>
             </div>
-
-            {/* Middle */}
-
-            {/* Right */}
-            Header
-        </div>
+           
         </>
     )
 }
-
-export default Header;
