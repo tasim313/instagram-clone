@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import React from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import { SearchIcon, PlusCircleIcon } from "@heroicons/react/outline";
+import {HomeIcon} from "@heroicons/react/solid"
 
 
 export default function Header(){
     return(
         <>
-            <div className="flex items-center justify-between max-w-6xl">
+            <div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
                 {/* Left */}
                   <div className="cursor-pointer h-24 w-24 relative hidden lg:inline-grid">
                       <Image src="http://www.jennexplores.com/wp-content/uploads/2015/09/Instagram_logo_black.png" 
@@ -32,7 +33,11 @@ export default function Header(){
 
                   {/* Right */}
 
-                  <h1>Right Side</h1>
+                  <div className="flex space-x-4 items-center">
+                        <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+                        <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"/>
+                        <img src='https://media.licdn.com/dms/image/C4E03AQEvhzZA4RQB4Q/profile-displayphoto-shrink_800_800/0/1639602808880?e=2147483647&v=beta&t=Tn8kApqLHW5SX_uuxLOPmxo-zQItiKfKlMeW9OAx7Jc' alt='user-image' className="h-10 rounded-full cursor-pointer"/>
+                  </div>
             </div>
            
         </>
