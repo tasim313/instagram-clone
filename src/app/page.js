@@ -15,7 +15,7 @@ export default function Home() {
       <Feed/>
 
 
-      <h1>Hello World</h1>
+      
 
      </div>
    
