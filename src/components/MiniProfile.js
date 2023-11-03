@@ -9,7 +9,7 @@ const MiniProfile = () =>{
                  <h2 className="font-bold">tasim</h2>
                  <h3 className="text-sm text-gray-400">Welcome to instagram</h3>
             </div>
-            <button className="font-semibold text-blue-400 text-sm">Sign Out</button>
+            <button className="font-semibold text-blue-400 text-sm ml-8">Sign Out</button>
         </div>
         </>
     )
