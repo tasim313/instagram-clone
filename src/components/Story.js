@@ -1,10 +1,11 @@
 import React from "react";
-
-const Story = ({img, username}) =>{
+import { PlusCircleIcon, PlusIcon } from "@heroicons/react/outline";
+const Story = ({img, username, isUser}) =>{
     return(
         <>
-        <div>
-            <img className="h-14 rounded-full p-[1.5px] border-red-500 border-2 cursor-pointer hover:scale-110 transition-transform duration-200 ease-out" src={img} alt={username}/>
+        <div className="relative group cursor-pointer">
+            <img className="h-14 rounded-full p-[1.5px] border-red-500 border-2 group-hover:scale-110 transition-transform duration-200 ease-out" src={img} alt={username}/>
+            {isUser && <PlusIcon className="h-6 absolute top-4 left-4 text-white"/>}
             <p className="text-xs w-14 truncate">{username}</p>
         </div>
         </>
