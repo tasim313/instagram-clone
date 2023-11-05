@@ -1,5 +1,6 @@
 import Feed from '@/components/Feed'
 import Header from '@/components/Header'
+import UploadModal from '@/components/UploadModal'
 import Image from 'next/image'
 
 export default function Home() {
@@ -14,8 +15,9 @@ export default function Home() {
       {/* Feed */}
       <Feed/>
 
-
+     {/* Modal */}
       
+      <UploadModal/>
 
      </div>
    
