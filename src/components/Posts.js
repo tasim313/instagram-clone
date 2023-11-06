@@ -18,6 +18,7 @@ const Posts = () =>{
         return unsubscribe;
     }, [db]); 
 
+    
 
     // const posts = [
     //     {

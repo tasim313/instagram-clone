@@ -1,12 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DotsHorizontalIcon, HeartIcon, ChatIcon, BookmarkIcon, EmojiHappyIcon } from '@heroicons/react/outline'
 import {useSession} from "next-auth/react"
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp, onSnapshot,  orderBy, query } from 'firebase/firestore'
 import { db } from '../../firebase'
+import Moment from 'react-moment'
 
 const Post = ({id, username, userImg, img, caption}) =>{
     const { data: session } = useSession()
     const [comment, setComment] = useState("")
+    const [comments, setComments] = useState([])
+
+    useEffect(() =>{
+        const unsubscribe = onSnapshot(
+          query(
+            collection(db, "posts", id, "comments"),
+            orderBy("timestamp", "desc")
+          ),
+          (snapshot) => {
+            setComments(snapshot.docs);
+          }
+        )
+    }, [])
 
     async function sendComment(event){
       event.preventDefault();
@@ -48,6 +62,18 @@ const Post = ({id, username, userImg, img, caption}) =>{
 
             {/* Post Comments */}
             <p className='p-5 truncate'><span className='font-bold mr-2'>{username}</span>{caption}</p>
+            {comments.length > 0 && (
+              <div className="mx-10 max-h-24 overflow-y-scroll scrollbar-none">
+                  {comments.map(comment =>(
+                    <div key={comment.data().id} className="flex items-center space-x-2 mb-2">
+                      <img src={comment.data().userImage} className='h-7 rounded-full object-cover' alt='user-image'/>
+                      <p className="font-semibold">{comment.data().username}</p>
+                      <p className="flex-1 truncate">{comment.data().comment}</p>
+                      <Moment fromNow>{comment.data().timestamp?.toDate()}</Moment>
+                    </div>
+                  ))}
+              </div>
+            )}
 
             {/* Post input box */}
             {session && (
