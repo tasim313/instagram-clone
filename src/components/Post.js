@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { DotsHorizontalIcon, HeartIcon, ChatIcon, BookmarkIcon, EmojiHappyIcon } from '@heroicons/react/outline'
 import {useSession} from "next-auth/react"
-import { addDoc, collection, serverTimestamp, onSnapshot,  orderBy, query } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp, onSnapshot,  orderBy, query, setDoc, doc } from 'firebase/firestore'
 import { db } from '../../firebase'
 import Moment from 'react-moment'
+import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
+import { useRecoilState } from "recoil";
+import { userState } from "../../atom/userAtom";
 
 const Post = ({id, username, userImg, img, caption}) =>{
     const { data: session } = useSession()
     const [comment, setComment] = useState("")
     const [comments, setComments] = useState([])
+    const [likes, setLikes] = useState([]);
+    const [hasLiked, setHasLiked] = useState(false)
+    const [currentUser] = useRecoilState(userState)
 
     useEffect(() =>{
         const unsubscribe = onSnapshot(
@@ -20,7 +26,30 @@ const Post = ({id, username, userImg, img, caption}) =>{
             setComments(snapshot.docs);
           }
         )
-    }, [])
+    }, [db, id])
+
+    useEffect(() => {
+      const unsubscribe = onSnapshot(
+        collection(db, "posts", id, "likes"),
+        (snapshot) => setLikes(snapshot.docs)
+      );
+    }, [db]);
+
+    useEffect(() => {
+      setHasLiked(
+        likes.findIndex((like) => like.id === currentUser?.uid) !== -1
+      );
+    }, [likes]);
+
+    async function likePost() {
+      if (hasLiked) {
+        await deleteDoc(doc(db, "posts", id, "likes", currentUser?.uid));
+      } else {
+        await setDoc(doc(db, "posts", id, "likes", currentUser?.uid), {
+          username: currentUser?.username,
+        });
+      }
+    }
 
     async function sendComment(event){
       event.preventDefault();
@@ -52,7 +81,9 @@ const Post = ({id, username, userImg, img, caption}) =>{
            {session && (
                    <div className='flex justify-between px-4 pt-4'>
                           <div className='flex space-x-4'>
-                              <HeartIcon className='btn'/>
+                            {hasLiked ? (
+                              <HeartIconFilled onClick={likePost} className='text-red-400 btn'/>
+                            ): <HeartIcon onClick={likePost} className='btn'/>}
                               <ChatIcon className='btn'/>
                           </div>
                           <BookmarkIcon className='btn'/>

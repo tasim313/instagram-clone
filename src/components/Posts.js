@@ -64,6 +64,8 @@ const Posts = () =>{
     //         caption: "Nice Picture"
     //     }
     // ]
+
+    
     return(
         <>
         <div>
